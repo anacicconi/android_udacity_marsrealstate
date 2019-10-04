@@ -17,8 +17,10 @@
 
 package com.example.android.marsrealestate.network
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -34,16 +36,19 @@ private val moshi = Moshi.Builder()
 
 // create retrofit object with our base url
 private val retrofit = Retrofit.Builder()
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(MoshiConverterFactory.create(moshi)) // use moshi to convert json to object
+        .addCallAdapterFactory(CoroutineCallAdapterFactory()) // replace the callback result by a coroutine
         //.addConverterFactory(ScalarsConverterFactory.create()) --> if we wanted to return string instead of object
         .baseUrl(BASE_URL)
         .build()
 
+// retrofit handle the requests in a background thread, no need to do it
 // create interface with method that will request the api
 interface MarsApiService {
     @GET("realestate")
     fun getProperties():
-            Call<List<MarsProperty>>
+            Deferred<List<MarsProperty>>
+            // Call<List<MarsProperty>> --> if there was no coroutine
 }
 
 // create object to expose retrofit to the rest of the app
