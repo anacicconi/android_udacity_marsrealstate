@@ -64,8 +64,14 @@ dependencies {
     // Core with Ktx
     implementation "androidx.core:core-ktx:$version_core"
 
+    // Library to convert json into an object
+    implementation "com.squareup.moshi:moshi:$version_moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+
     // Library to make api calls
     implementation "com.squareup.retrofit2:retrofit: $version_retrofit"
+    // Library that allows retrofit to return json as an object
+    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
     // Library that allows retrofit to return json as string
     implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
 }
